@@ -30,6 +30,19 @@ say()  { printf '\033[36m%s\033[0m\n' "$*"; }
 warn() { printf '\033[33m%s\033[0m\n' "$*" >&2; }
 die()  { printf '\033[31m%s\033[0m\n' "$*" >&2; exit 1; }
 
+# If we exit with an error during a double-click launch, the terminal window
+# can slam shut before anyone reads why. Pause so the message stays put.
+# (We exec DOSBox at the very end, which replaces this shell — so a *normal*
+# WordStar exit never reaches this trap, only a failure before launch does.)
+on_error_exit() {
+    local code=$?
+    if [ "$code" -ne 0 ] && [ -t 0 ]; then
+        printf '\n\033[33mPress Enter to close this window.\033[0m' >&2
+        read -r _ || true
+    fi
+}
+trap on_error_exit EXIT
+
 # --- 1. seed the drive folder (program + your documents) ----------------
 if [ ! -f "$DRIVE/WS.EXE" ]; then
     say "Setting up your WordStar folder (first run)..."
@@ -111,4 +124,5 @@ sed "s|__DRIVE__|$DRIVE|g" "$CONF_TMPL" > "$CONF_OUT"
 # --- 5. launch ----------------------------------------------------------
 say "Starting WordStar 4.0 ..."
 say "Your documents are saved in:  $DRIVE"
+say "Tip: press Alt-Enter for full screen.  Manual: docs/MANUAL.md"
 exec "$DOSBOX" -conf "$CONF_OUT"

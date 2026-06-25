@@ -54,4 +54,5 @@ if (-not $dosbox) {
 # --- 5. launch ---
 Write-Host "Starting WordStar 4.0 ..." -ForegroundColor Cyan
 Write-Host "Your documents are saved in: $Drive" -ForegroundColor Cyan
+Write-Host "Tip: press Alt-Enter for full screen.  Manual: docs\MANUAL.md" -ForegroundColor Cyan
 & $dosbox -conf $ConfOut

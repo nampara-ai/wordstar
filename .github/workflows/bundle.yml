@@ -40,7 +40,7 @@ jobs:
           STAGE=WordStar-4
           rm -rf "$STAGE" dist; mkdir -p "$STAGE" dist
           cp -R ws4 web native config docs scripts "$STAGE"/
-          cp README.md WordStar.command WordStar.bat wordstar.sh "$STAGE"/
+          cp README.md WordStar.command WordStar.bat WordStar.desktop wordstar.sh "$STAGE"/
           # don't ship throwaway runtime state
           rm -f "$STAGE"/native/.dosbox.generated.conf
           rm -rf "$STAGE"/drive

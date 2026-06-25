@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=WordStar 4.0
+GenericName=Word Processor
+Comment=Write in the real 1987 WordStar on your modern computer
+# Locate this .desktop file's own folder (handles plain paths and file:// URIs),
+# then run the Linux launcher next to it. Works from a file manager double-click.
+Exec=sh -c 'p="%k"; p="${p#file://}"; cd "$(dirname "$p")" && exec ./wordstar.sh'
+Path=
+Terminal=true
+Icon=accessories-text-editor
+Categories=Office;WordProcessor;TextEditor;
+Keywords=wordstar;word;processor;writing;dos;

@@ -1,99 +1,136 @@
-# WordStar 4.0 — on a modern Mac, Windows, or Linux
+<div align="center">
 
-The real MicroPro **WordStar Professional Release 4** (1987), running on
-computers it was never meant to see — with zero setup.
+# WordStar 4.0
 
-WordStar is a 16‑bit MS‑DOS program. No modern OS can run it directly
-(Apple dropped 32/16‑bit code entirely; 64‑bit Windows can't run DOS apps;
-Linux never could). So this repo wraps the **original, unmodified** WordStar
-binaries (`ws4/`) in DOSBox and gives you two ways in:
+### The real 1987 word processor. Your modern computer. **One click.**
+
+*The program George R. R. Martin still writes* A Song of Ice and Fire *in —*
+*booting on macOS, Windows, and Linux with nothing to install.*
+
+**[⬇️ Get it](#-install-in-30-seconds) · [📖 Full manual](docs/MANUAL.md) · [⌨️ Cheat sheet](docs/QUICK-REFERENCE.md) · [🌐 Try it in your browser](#-the-browser-version)**
+
+</div>
+
+---
+
+This is not a clone, a tribute, or a rewrite. The files in [`ws4/`](ws4/) are the
+**original, unmodified MicroPro WordStar Professional Release 4 binaries** from
+1987. When you press `Ctrl‑K X`, the exact machine code that ran on an IBM PC/AT
+saves your file.
+
+WordStar is a 16‑bit MS‑DOS program, and no modern OS will run it directly
+(Apple dropped 16‑bit code, 64‑bit Windows refuses DOS apps, Linux never spoke
+DOS). So this repo wraps the originals in **DOSBox Staging** — *already bundled,
+for all three platforms* — and gives you a single icon to click. **No install,
+no setup, no internet required.**
 
 | | What it is | Best for |
 |---|---|---|
-| 🖥️ **Desktop** | Double‑click launcher → WordStar opens in a window. Your documents are real files in the `drive/` folder. | Actually writing. |
-| 🌐 **Browser** | WordStar compiled to WebAssembly. Open a page, start typing. Nothing to install, ever. | Trying it instantly, any device. |
+| 🖥️ **Desktop** | Double‑click a launcher → WordStar opens in a window. Your documents are real files in the `drive/` folder. | Actually writing. |
+| 🌐 **Browser** | WordStar compiled to WebAssembly. Open a page, start typing. Nothing to install, ever. | Trying it instantly, on any device. |
 
 Both run the *same* WordStar binaries.
 
 ---
 
-## 🌐 Browser — the truly zero‑install way
+## ⬇️ Install in 30 seconds
 
-Open **`web/index.html`** through any web server and WordStar boots straight
-into its opening menu. The quickest local way:
+**Get the files:** clone this repo, or download the ZIP and unzip it. Then:
+
+| Your computer | Double‑click this | Notes |
+|---|---|---|
+| 🍎 **macOS** | **`WordStar.command`** | First time: right‑click → **Open** to clear Gatekeeper (once). |
+| 🪟 **Windows** | **`WordStar.bat`** | First time: SmartScreen → **More info → Run anyway** (once). |
+| 🐧 **Linux** | **`WordStar.desktop`** *(or run `./wordstar.sh`)* | First time you may need to right‑click → *Allow Launching*. |
+
+The first launch creates your personal **`drive/`** folder (that's your WordStar
+disk — the program plus everything you write) and drops you at WordStar's
+Opening Menu. After that, it just opens.
+
+> **Then:** press **`D`** to create a document, type a name like `LETTER.DOC`,
+> and start writing. Press **`Alt‑Enter`** for full screen. Save early and often
+> with **`Ctrl‑K S`** — WordStar doesn't autosave.
+
+That's the entire setup. **No DOSBox to install** — a private copy for your OS is
+already in this folder. Everything runs **completely offline, forever.** (Got
+`dosbox-staging` or `dosbox` on your `PATH` already? The launcher quietly uses
+it instead.)
+
+---
+
+## ⌨️ The 30‑second crash course
+
+WordStar predates the mouse — it's driven by **`Ctrl`‑key** commands (written
+`^` here, so `^KS` means `Ctrl‑K` then `S`):
+
+```
+^KS   save, keep writing        ^KX   save and exit WordStar
+^KD   save, back to the menu     ^KQ   quit WITHOUT saving
+^Y    delete the whole line      ^T    delete the next word
+^U    un‑erase (undo)            ^B    re‑flow a paragraph
+arrows move the cursor           ^J    help        Alt‑Enter  full screen
+```
+
+From the Opening Menu, **`D`** opens or creates a document; **`P`** prints;
+**`X`** exits to DOS. The bundled **`WELCOME.DOC`** walks you through the rest —
+and the **[full manual](docs/MANUAL.md)** has ten lessons, every command, mail
+merge, and troubleshooting.
+
+**New here? → [Read the manual](docs/MANUAL.md).** It's genuinely good, and you'll
+be fluent in half an hour.
+
+---
+
+## 🌐 The browser version
+
+The truly zero‑install way — WordStar running in a web page:
 
 ```bash
 cd web && python3 -m http.server 8000
 # now open http://localhost:8000
 ```
 
-> It needs a server (not a `file://` double‑click) because browsers won't load
-> WebAssembly off the local filesystem. The one‑liner above is all it takes —
-> or publish it to the web for a permanent link (see *GitHub Pages* below).
-
-Your work is saved automatically inside your browser. Use the floppy‑disk
-button on the left edge to download your documents as files.
-
----
-
-## 🖥️ Desktop — double‑click and write
-
-Grab the repo (clone it, or download the ZIP and unzip), then:
-
-| OS | Do this |
-|---|---|
-| **macOS** | Double‑click **`WordStar.command`** |
-| **Windows** | Double‑click **`WordStar.bat`** |
-| **Linux** | Run **`./wordstar.sh`** |
-
-The first launch sets up a DOSBox (see *Zero dependencies* below) and creates
-your **`drive/`** folder — that's your WordStar disk, holding the program and
-every document you write. After that it just opens.
-
-> **Already have DOSBox?** If `dosbox-staging` or `dosbox` is on your PATH, the
-> launcher uses it and downloads nothing.
-
-> **macOS Gatekeeper:** the first time, right‑click `WordStar.command` →
-> **Open** to get past the "unidentified developer" prompt (once). The launcher
-> clears the quarantine flag on its bundled DOSBox for you.
+WordStar boots straight into its Opening Menu. Your work autosaves *inside the
+browser*; use the **floppy‑disk button** on the left edge to download documents
+as real files. (It needs a small local server rather than a `file://`
+double‑click, because browsers won't load WebAssembly off the bare filesystem.)
+Every Ctrl‑key works here too — they're captured before the browser sees them.
 
 ---
 
-## Using WordStar (the 30‑second version)
+## 📂 Where your writing lives
 
-WordStar is driven by **Ctrl‑key** commands. The essentials:
+Everything you write is an ordinary text file in the **`drive/`** folder next to
+the launcher (inside WordStar, that folder is drive `C:`):
 
 ```
-Ctrl‑K S    save, keep editing          Ctrl‑K X    save and exit
-Ctrl‑K D    save, back to menu          Ctrl‑K Q    quit without saving
-Ctrl‑J      help                        arrows      move (or Ctrl‑E/X/S/D)
+drive/LETTER.DOC      ← what you wrote — open it in any modern editor
+drive/LETTER.BAK      ← WordStar's automatic backup of your previous save
 ```
 
-From the opening menu press **D** to open or create a document, type a name
-like `LETTER.DOC`, and go. The included **`WELCOME.DOC`** walks you through the
-rest. (Yes, the Ctrl‑keys really do work in the browser — they're captured
-before the browser sees them.)
+Deleted something you wanted? Your last save is sitting in the matching `.BAK`
+file. File names are DOS‑style **8.3** (up to 8 characters, a dot, up to 3 —
+`CHAPTER1.DOC`).
 
 ---
 
-## Zero dependencies, fully offline
+## 🔋 Zero dependencies, fully offline
 
-The desktop launchers use **[DOSBox Staging](https://www.dosbox-staging.org/)**.
-You never have to install it yourself — it arrives one of three ways:
+The desktop launchers use **[DOSBox Staging](https://www.dosbox-staging.org/)**,
+and you never install it — a copy for every OS is **committed right in this repo**
+under [`native/bin/`](native/bin/README.md). Three ways it can get there:
 
-1. **First run** downloads the build for your OS (one time, then offline forever).
-2. **`scripts/fetch-dosbox.sh`** / **`scripts/fetch-dosbox.ps1`** stages it ahead of time.
-3. The **`Build offline bundle`** GitHub Action produces
-   **`WordStar-4-portable.zip`** with DOSBox for all three OSes already inside —
-   download, unzip, double‑click, even with no internet at all.
-
-See [`native/bin/README.md`](native/bin/README.md) for details.
+1. **Already bundled** — clone or unzip and go; nothing to download.
+2. **`scripts/fetch-dosbox.sh`** / **`.ps1`** — re‑stage or bump the version.
+3. **`Build offline bundle`** GitHub Action — produces
+   **`WordStar-4-portable.zip`** with DOSBox for all three OSes inside, for a
+   download‑unzip‑doubleclick experience with no internet at all.
 
 ---
 
-## Publish the browser version (optional)
+## 🚀 Publish the browser version (optional)
 
-To get a permanent, shareable URL:
+For a permanent, shareable URL:
 
 1. Push this repo to GitHub.
 2. **Settings → Pages → Source: GitHub Actions.**
@@ -102,19 +139,21 @@ To get a permanent, shareable URL:
 
 ---
 
-## What's in here
+## 🗂️ What's in here
 
 ```
 ws4/                     Original WordStar 4 binaries (the real thing)
-docs/WELCOME.DOC         Sample document / quick tutorial
+docs/MANUAL.md           ★ The full user manual — lessons, commands, troubleshooting
+docs/QUICK-REFERENCE.md  One-page printable keyboard cheat sheet
+docs/WELCOME.DOC         Friendly starter document (opens inside WordStar)
 config/                  DOSBox configs (web + desktop)
-web/                     Browser version (js-dos / DOSBox‑WASM) + index.html
-  wordstar.jsdos         WordStar packaged as a js-dos bundle
-WordStar.command         macOS launcher        (double‑click)
-WordStar.bat             Windows launcher      (double‑click)
-wordstar.sh              Linux launcher
+web/                     Browser version (js-dos / DOSBox-WASM) + index.html
+WordStar.command         macOS launcher        (double-click)
+WordStar.bat             Windows launcher      (double-click)
+WordStar.desktop         Linux launcher        (double-click)
+wordstar.sh              Linux launcher        (terminal)
 native/lib/              Launcher internals (find/fetch DOSBox, boot WordStar)
-native/bin/              Bundled DOSBox per OS (fetched, not committed)
+native/bin/              Bundled DOSBox per OS  (committed, runs offline)
 scripts/                 fetch-dosbox.*, build-web.sh, make_jsdos.py
 .github/workflows/       bundle.yml (offline zip) + pages.yml (browser site)
 ```
@@ -123,13 +162,21 @@ Rebuilt the browser bundle after changing `ws4/`? Run `scripts/build-web.sh`.
 
 ---
 
-## Notes
+## 📜 Notes & licensing
 
 - **WordStar** is the property of its respective rights holders. These binaries
   are widely distributed as abandonware; this project adds only the wrapping to
   run them and claims no ownership of WordStar itself.
-- **DOSBox Staging** is GPL‑licensed and downloaded from its official releases.
-- The browser version uses **[js-dos](https://js-dos.com)** (DOSBox compiled to
+- **DOSBox Staging** is GPL‑licensed and bundled from its official releases.
+- The browser version uses **[js‑dos](https://js-dos.com)** (DOSBox compiled to
   WebAssembly), also GPL‑licensed; its files live under `web/`.
-- The wrapper code in this repo (scripts, launchers, web glue) is free for you
-  to use and adapt.
+- The wrapper code in this repo (launchers, scripts, web glue, docs) is free for
+  you to use and adapt.
+
+<div align="center">
+
+---
+
+*“It is 1987 again. Have fun.”*
+
+</div>
