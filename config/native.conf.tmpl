@@ -1,0 +1,20 @@
+# DOSBox config template for the desktop launchers.
+# The launcher copies this file and fills in the drive placeholder with the
+# absolute path of your WordStar folder (the program plus your documents),
+# then boots straight into WordStar.
+#
+# Kept intentionally minimal so it works unchanged on both DOSBox Staging
+# and classic DOSBox. Press Alt-Enter at any time for fullscreen.
+
+[sdl]
+fullscreen=false
+
+[cpu]
+cycles=auto
+
+[autoexec]
+@echo off
+mount c "__DRIVE__"
+c:
+cls
+ws

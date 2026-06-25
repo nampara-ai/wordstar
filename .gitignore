@@ -1,0 +1,19 @@
+# Runtime state created by the launchers
+/drive/
+/native/.dosbox.generated.conf
+
+# DOSBox binaries fetched by scripts/fetch-dosbox.* or CI (not committed;
+# they're downloaded on first run or bundled into the release zip)
+/native/bin/linux/
+/native/bin/macos/
+/native/bin/windows/
+
+# Build / packaging output
+/dist/
+WordStar-4/
+node_modules/
+*.log
+
+# js-dos browser autosave + stray screenshots
+/web/wordstar.jsdos.changes
+/web/*.png

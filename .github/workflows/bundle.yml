@@ -1,0 +1,60 @@
+name: Build offline bundle
+
+# Produces WordStar-4-portable.zip: WordStar + the browser build + DOSBox
+# Staging for macOS / Windows / Linux, so it runs offline with zero installs.
+#
+# GitHub's runners have open network access, so this is where the DOSBox
+# binaries get fetched and bundled (the dev sandbox that created this repo
+# could not reach the release CDN).
+#
+# Run it from the Actions tab (workflow_dispatch) or by pushing a v* tag.
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install packaging tools
+        run: sudo apt-get update && sudo apt-get install -y xz-utils unzip zip
+
+      - name: Fetch DOSBox Staging for all platforms
+        run: |
+          ./scripts/fetch-dosbox.sh linux
+          ./scripts/fetch-dosbox.sh windows
+          ./scripts/fetch-dosbox.sh macos     # stashes the raw .dmg for first-run unpack
+
+      - name: Build the browser bundle
+        run: ./scripts/build-web.sh
+
+      - name: Assemble the portable package
+        run: |
+          STAGE=WordStar-4
+          rm -rf "$STAGE" dist; mkdir -p "$STAGE" dist
+          cp -R ws4 web native config docs scripts "$STAGE"/
+          cp README.md WordStar.command WordStar.bat wordstar.sh "$STAGE"/
+          # don't ship throwaway runtime state
+          rm -f "$STAGE"/native/.dosbox.generated.conf
+          rm -rf "$STAGE"/drive
+          (cd "$STAGE" && zip -qr ../dist/WordStar-4-portable.zip .)
+          ls -lh dist
+
+      - name: Upload as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WordStar-4-portable
+          path: dist/WordStar-4-portable.zip
+
+      - name: Attach to the release (tag pushes only)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/WordStar-4-portable.zip

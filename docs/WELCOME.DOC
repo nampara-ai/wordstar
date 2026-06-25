@@ -1,0 +1,59 @@
+
+
+                    WELCOME TO WORDSTAR 4.0
+
+     This is the real MicroPro WordStar, the word processor
+     that wrote a generation of books -- now running on your
+     modern computer with zero setup.
+
+
+HOW TO GET AROUND
+-----------------
+
+WordStar uses Ctrl-key commands.  Hold Ctrl and press a letter.
+The most useful ones:
+
+     Ctrl-K S      Save the file and keep editing
+     Ctrl-K D      Save the file and return to the menu
+     Ctrl-K X      Save everything and exit WordStar
+     Ctrl-K Q      Quit WITHOUT saving
+
+     Ctrl-E        Move the cursor up        (E is "up")
+     Ctrl-X        Move the cursor down      (X is "down")
+     Ctrl-S        Move the cursor left      (S is "left")
+     Ctrl-D        Move the cursor right     (D is "right")
+
+     The arrow keys work too.
+
+     Ctrl-Y        Delete the whole line
+     Ctrl-T        Delete the word ahead
+     Ctrl-K B      Mark the start of a block
+     Ctrl-K K      Mark the end of a block
+     Ctrl-K C      Copy the marked block
+     Ctrl-K V      Move the marked block
+
+     Ctrl-J        Help
+
+
+OPENING AND MAKING FILES
+------------------------
+
+From the opening menu:
+
+     D     Open or create a Document
+     P     Print a file
+     X     Exit to DOS
+
+To start a new letter, press  D , type a name like  LETTER.DOC ,
+and press Enter.
+
+
+THAT IS IT
+----------
+
+Press  Ctrl-K X  now to save and exit, or just start typing
+over this text.  Your files are saved automatically in the
+browser version, and to your WordStar folder in the desktop
+version.
+
+Have fun.  It is 1987 again.

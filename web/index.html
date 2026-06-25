@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WordStar 4.0</title>
+<link rel="stylesheet" href="js-dos.css">
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; height: 100%; background: #1a1a1a; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #c8c8c8; }
+  #app { display: flex; flex-direction: column; height: 100%; }
+  header { display: flex; align-items: center; gap: .75rem; padding: .4rem .7rem; background: #111; border-bottom: 1px solid #333; flex: 0 0 auto; }
+  header h1 { font-size: .95rem; margin: 0; font-weight: 600; letter-spacing: .04em; color: #e6e6e6; }
+  header h1 span { color: #6aa9ff; }
+  header .grow { flex: 1; }
+  header a.btn {
+    font: inherit; font-size: .8rem; color: #cde2ff; background: #1d2b44;
+    border: 1px solid #36507e; border-radius: 6px; padding: .25rem .6rem; cursor: pointer; text-decoration: none;
+  }
+  header .btn:hover { background: #26415f; }
+  #dos { flex: 1 1 auto; position: relative; min-height: 0; background: #000; }
+  /* js-dos fills its parent */
+  #dos .jsdos-rso { width: 100%; height: 100%; }
+  footer { flex: 0 0 auto; padding: .35rem .7rem; background: #111; border-top: 1px solid #333; font-size: .72rem; color: #888; text-align: center; }
+  kbd { background: #222; border: 1px solid #444; border-bottom-width: 2px; border-radius: 4px; padding: 0 .3rem; color: #ddd; font-size: .72rem; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Word<span>Star</span> 4.0</h1>
+    <div class="grow"></div>
+    <a class="btn" href="#" id="fs">⛶ Fullscreen</a>
+    <a class="btn" href="https://github.com/nampara-ai/wordstar#readme" target="_blank" rel="noopener">Help</a>
+  </header>
+  <div id="dos"></div>
+  <footer>
+    Real WordStar 4.0 in your browser · Save &amp; exit with <kbd>Ctrl</kbd>+<kbd>K</kbd> then <kbd>X</kbd> ·
+    Your work is kept in this browser; use the floppy-disk button (left edge) to download your files.
+  </footer>
+</div>
+
+<script src="js-dos.js"></script>
+<script>
+  // Boot straight into WordStar. See README for why each option is set.
+  const props = {
+    url: "wordstar.jsdos",
+    pathPrefix: "emulators/",   // where wdosbox.wasm / wlibzip.wasm live
+    backend: "dosbox",          // classic DOSBox is plenty for a text editor
+    autoStart: true,            // no "click to run" splash
+    noCloud: true,              // no account / login prompts
+    autoSave: true,             // persist the C: drive to this browser automatically
+    kiosk: false,               // keep the slim js-dos sidebar (save/keyboard/fullscreen)
+    imageRendering: "pixelated",
+    renderAspect: "4/3",
+    theme: "dark",
+    backendLocked: true,
+  };
+
+  const dosDiv = document.getElementById("dos");
+  window.Dos(dosDiv, props);
+
+  // Fullscreen toggle (browser API; js-dos also has its own button).
+  document.getElementById("fs").addEventListener("click", (e) => {
+    e.preventDefault();
+    const el = document.getElementById("app");
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (el.requestFullscreen) el.requestFullscreen();
+  });
+</script>
+</body>
+</html>
