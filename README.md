@@ -4,7 +4,7 @@
 
 # WordStar 4.0
 
-### The real 1987 word processor. Your modern computer. **One click.**
+### The real 1987 word processor. Your modern computer.
 
 *The program George R. R. Martin still writes* A Song of Ice and Fire *in —*
 *booting on macOS, Windows, and Linux with nothing to install.*
