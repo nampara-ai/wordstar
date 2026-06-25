@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="web/social-preview.png" alt="WordStar Professional — Release 4 (MicroPro)" width="680">
+
 # WordStar 4.0
 
 ### The real 1987 word processor. Your modern computer. **One click.**
@@ -170,8 +172,9 @@ Rebuilt the browser bundle after changing `ws4/`? Run `scripts/build-web.sh`.
 - **DOSBox Staging** is GPL‑licensed and bundled from its official releases.
 - The browser version uses **[js‑dos](https://js-dos.com)** (DOSBox compiled to
   WebAssembly), also GPL‑licensed; its files live under `web/`.
-- The wrapper code in this repo (launchers, scripts, web glue, docs) is free for
-  you to use and adapt.
+- The wrapper code in this repo (launchers, scripts, web glue, docs) is
+  **[MIT-licensed](LICENSE)** — free for you to use and adapt. Bundled WordStar
+  and DOSBox Staging retain their own licenses (noted above).
 
 <div align="center">
 

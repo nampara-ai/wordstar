@@ -11,3 +11,5 @@ node_modules/
 # js-dos browser autosave + stray screenshots
 /web/wordstar.jsdos.changes
 /web/*.png
+# keep the social-share/OG image (intentional, not a stray screenshot)
+!/web/social-preview.png
