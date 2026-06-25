@@ -161,8 +161,10 @@ work autosaves *inside the browser*; use the **floppy‑disk button** on the lef
 edge of the page to download your documents as real files.
 
 Every Ctrl‑key in this manual works in the browser too — they’re captured before
-the browser sees them. To publish a permanent, shareable link, see
-[the README](../README.md#-publish-the-browser-version-optional).
+the browser sees them. This repo already publishes the browser edition at
+**<https://nampara-ai.github.io/wordstar/>** — open it on any device, nothing to
+install. (To host your own copy, see *Publish the browser version* in the
+[README](../README.md).)
 
 ---
 

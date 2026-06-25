@@ -7,7 +7,7 @@
 *The program George R. R. Martin still writes* A Song of Ice and Fire *in —*
 *booting on macOS, Windows, and Linux with nothing to install.*
 
-**[⬇️ Get it](#-install-in-30-seconds) · [📖 Full manual](docs/MANUAL.md) · [⌨️ Cheat sheet](docs/QUICK-REFERENCE.md) · [🌐 Try it in your browser](#-the-browser-version)**
+**[⬇️ Download](https://github.com/nampara-ai/wordstar/releases/latest) · [📖 Full manual](docs/MANUAL.md) · [⌨️ Cheat sheet](docs/QUICK-REFERENCE.md) · [🌐 Try it in your browser](https://nampara-ai.github.io/wordstar/)**
 
 </div>
 
