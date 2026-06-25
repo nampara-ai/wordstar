@@ -15,6 +15,14 @@
 
 ---
 
+<div align="center">
+
+<img src="docs/wordstar-on-mac.jpg" alt="WordStar 4.0 running on a modern Mac — the EDIT MENU with a document open" width="760">
+
+<sub><i>WordStar 4.0 running today on a modern Mac — same screen, same keystrokes, the same 1987 binaries, unchanged.</i></sub>
+
+</div>
+
 This is not a clone, a tribute, or a rewrite. The files in [`ws4/`](ws4/) are the
 **original, unmodified MicroPro WordStar Professional Release 4 binaries** from
 1987. When you press `Ctrl‑K X`, the exact machine code that ran on an IBM PC/AT
