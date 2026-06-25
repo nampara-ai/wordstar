@@ -1,0 +1,252 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH DOSBOX 1 "Dec 4, 2023"
+.\" Please adjust this date whenever revising the manpage.
+
+.SH NAME
+
+dosbox \- DOSBox Staging, x86/DOS emulator, a modern continuation of DOSBox
+
+.SH SYNOPSIS
+
+.B dosbox
+.B [\-\-fullscreen]
+.B [\-\-startmapper]
+.B [\-\-noautoexec]
+.B [\-\-securemode]
+.BI "[\-\-conf " <configfile> ]
+.BI "[\-\-lang " <langfile> ]
+.BI "[\-\-machine " <type> ]
+.BI "[\-\-socket " <num> ]
+.BI "[\-c " <command> ]
+.B [\-\-exit]
+.B [PATH]
+.LP
+.B dosbox \-\-help
+.LP
+.B dosbox \-\-version
+.LP
+.B dosbox \-\-printconf
+.LP
+.B dosbox \-\-editconf
+.LP
+.B dosbox \-\-eraseconf
+.LP
+.B dosbox \-\-noprimaryconf
+.LP
+.B dosbox \-\-nolocalconf
+.LP
+.B dosbox \-\-set <property>=<value>
+.LP
+.B dosbox \-\-working-dir <path>
+.LP
+.B dosbox \-\-list\-countries
+.LP
+.B dosbox \-\-list\-glshaders
+.LP
+.B dosbox \-\-erasemapper
+
+.SH DESCRIPTION
+
+This manual page briefly documents
+.BR "DOSBox Staging" ", a modern continuation of DOSBox".
+.LP
+.RB "If " PATH " is a directory, it's mounted as C:.
+.br
+.RB "If " PATH " is a bootable disk image (.IMA/.IMG), it's booted.
+.br
+.RB "If " PATH " is a CD-ROM disc image (.CUE/.ISO), it's mounted as D:.
+.br
+.RB "If " PATH " is a DOS executable (.BAT/.COM/.EXE), it's parent path
+is mounted as C: and the executable is run. When the executable exits,
+DOSBox Staging quits.
+.LP
+.RI "For an introduction, type " INTRO 
+.RB "inside " "DOSBox Staging" .
+.LP
+.RB "The document will refer to " "DOSBox Staging" " as "dosbox " from now on for readability.
+
+.SH OPTIONS
+
+Legacy single dash abbrevations still work for backwards compatibility.
+.LP
+--conf <config_file>     Start with the options specified in <config_file>.
+                         Multiple configuration files can be specified.
+                         Example: --conf conf1.conf --conf conf2.conf
+
+--printconf              Print the location of the primary configuration file.
+
+--editconf               Open the primary configuration file in a text editor.
+
+--eraseconf              Delete the primary configuration file.
+
+--noprimaryconf          Don't load or create the primary configuration file.
+
+--nolocalconf            Don't load the local 'dosbox.conf' configuration file
+                         if present in the current working directory.
+
+--set <setting>=<value>  Set a configuration setting. Multiple configuration
+                         settings can be specified. Example:
+                         --set mididevice=fluidsynth --set soundfont=mysoundfont.sf2
+
+--working-dir <path>     Set working directory to <path>. DOSBox will act as if
+                         started from this directory.
+
+--list-countries         List all supported countries with their numeric codes.
+                         Codes are to be used in the 'country' config setting.
+
+--list-glshaders         List all available OpenGL shaders and their paths.
+                         Shaders are to be used in the 'glshader' config setting.
+
+--fullscreen             Start in fullscreen mode.
+
+--lang <lang_file>       Start with the language specified in <lang_file>.
+
+--machine <type>         Emulate a specific type of machine. The machine type has
+                         influence on both the emulated video and sound cards.
+                         Valid choices are: hercules, cga, cga_mono, tandy,
+                         pcjr, ega, svga_s3 (default), svga_et3000, svga_et4000,
+                         svga_paradise, vesa_nolfb, vesa_oldvbe.
+
+-c <command>             Run the specified DOS command before handling the PATH.
+                         Multiple commands can be specified.
+
+--noautoexec             Don't run DOS commands from any [autoexec] sections.
+
+--exit                   Exit after running '-c <command>'s and [autoexec] sections.
+
+--startmapper            Run the mapper GUI.
+
+--erasemapper            Delete the default mapper file.
+
+--securemode             Enable secure mode by disabling the MOUNT and IMGMOUNT
+                         commands.
+
+--socket <num>           Run nullmodem on the specified socket number.
+
+--help                   Print help message and exit.
+
+--version                Print version information and exit.
+
+.SH "INTERNAL COMMANDS"
+
+dosbox has a comprehensive internal help system which can be accessed by running HELP command.
+
+dosbox supports most of the DOS commands found in COMMAND.COM. In addition, the
+following extra commands are frequently used:
+
+MOUNT
+
+Program to mount local directories as drives inside dosbox.
+
+IMGMOUNT
+
+A utility to mount disk images and CD‐ROM images in dosbox.
+
+CONFIG
+
+Change dosbox internal configuration on the fly. May not work with all options.
+
+LOADFIX
+
+Program to reduce the amount of  memory available. Useful for old programs which 
+don't expect much memory to be free.
+
+RESCAN
+
+Make dosbox reread the directory structure. Useful if you changed something 
+on a mounted drive outside dosbox. Ctrl+F4 does this as well.
+
+BOOT
+
+BOOT will start floppy images or hard disk images independent of the operating system emulation
+offered by dosbox. This will allow you to play booter floppies or boot to other operating 
+systems inside dosbox.
+
+.SH FILES
+
+Configuration and language files use a format similar to Windows .ini files. 
+If no configfile is specified at the commandline, a file named
+.BR dosbox-staging.conf " (if present in the current directory) will be"
+.RB " loaded automatically. We also will read and load " dosbox.conf " locally
+.RB "too, if " dosbox-staging.conf " isn't present.
+.LP
+If a configfile is specified at the commandline
+that one will be used instead. If no configfile is specified or found
+in the current directory
+.RB " then dosbox will load one from " $XDG_CONFIG_HOME/dosbox/ "
+.RB " (which defaults to " ~/.config/dosbox/ "). It will try to create a
+new default config file if it does not exist yet.
+
+.SH "SPECIAL KEYS"
+
+.TP 12m
+.IP Alt+Enter
+Switch between fullscreen and window mode.
+.IP Alt+Pause
+Pause/Unpause emulator.
+.IP Ctrl+F1
+Start the keymapper.
+.IP Ctrl+F4
+Swap mounted disk\(hyimage (only used with imgmount). Update directory cache
+for all drives.
+.IP Ctrl+F5
+Save a screenshot of the DOS pre-rendered image.
+.IP Alt+F5
+Save a screenshot of the rendered image.
+.IP Ctrl+F6
+Start/Stop recording sound output to a wave file.
+.IP Ctrl+F7
+Start/Stop recording video output to a zmbv file.
+.IP Ctrl+F8
+Mute/Unmute the audio.
+.IP Ctrl+F9
+Kill dosbox.
+.IP Ctrl+F10
+Capture/Release the mouse.
+.IP Ctrl+F11
+Slow down emulation (Decrease number of cycles/s).
+.IP Ctrl+F12
+Speed up emulation (Increase number of cycles/s).
+.IP Alt+F12
+Unlock speed (turbo button).
+.PP
+These are the default keybindings. They can be changed in the keymapper. More bindable actions can be found in the keymapper.
+.PP
+
+.SH NOTES
+
+Saved/recorded files can be found in current_directory/capture
+(can be changed in the configfile).
+.RB "The directory has to exist prior to starting " dosbox " else nothing"
+gets saved/recorded!
+.PP
+.RB "Once you increase your " dosbox " cycles beyond your computer's maximum
+capacity, it will produce the same effect as slowing down the emulation.
+This maximum will vary from computer to computer, there is no standard.
+
+.SH ENVIRONMENT
+
+Any configuration option can be override using an environment variable.
+.RB "Environment variables starting with prefix " DOSBOX " are processed and
+interpreted as follows:
+.B DOSBOX_SECTIONNAME_PROPERTYNAME=value
+.PP
+.R For example, you can override Sound Blaster type to Sound Blaster Pro 2 this way:
+.PP
+.B $ DOSBOX_SBLASTER_SBTYPE=sbpro2 dosbox
+
+.SH BUGS
+
+.RI "To report a bug, please visit " https://github.com/dosbox-staging/dosbox-staging/issues
+
+.SH "SEE ALSO"
+
+You'll find long and detailed manual in README file in /usr/share/doc/dosbox-staging
+
+.SH AUTHOR
+
+.RI "DOSBox Staging project is maintained by the DOSBox Staging Team (" https://www.dosbox-staging.org/ ")
+
+This manual page was written by Peter Veenstra <H.P.Veenstra@student.rug.nl> and James Oakley <jfunk@funktronics.ca>,
+for the Debian system (but may be used by others), updated by Patryk Obara <dreamer.tan@gmail.com> and Antti Peltola <antti.peltola@kolumbus.fi> for DOSBox Staging
+project.
