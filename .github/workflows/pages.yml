@@ -3,8 +3,8 @@ name: Deploy browser version to GitHub Pages
 # Publishes the in-browser WordStar (web/) to GitHub Pages so anyone can use
 # it from a URL with nothing to install.
 #
-# One-time setup: repo Settings -> Pages -> Build and deployment ->
-# Source: "GitHub Actions". Then the site lives at
+# This enables Pages automatically on first run (enablement: true below), so
+# no manual Settings visit is needed. The site lives at
 # https://<owner>.github.io/<repo>/
 
 on:
@@ -31,6 +31,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+        with:
+          # Turn Pages on automatically the first time, so this works without a
+          # manual visit to Settings -> Pages. Uses the pages:write permission
+          # granted above.
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web
