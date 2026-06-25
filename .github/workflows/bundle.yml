@@ -53,8 +53,35 @@ jobs:
           name: WordStar-4-portable
           path: dist/WordStar-4-portable.zip
 
-      - name: Attach to the release (tag pushes only)
+      - name: Publish the release (tag pushes only)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          name: WordStar 4.0 — ${{ github.ref_name }}
           files: dist/WordStar-4-portable.zip
+          fail_on_unmatched_files: true
+          body: |
+            **The real 1987 WordStar, on your modern computer. One click.**
+
+            This release ships **`WordStar-4-portable.zip`** — WordStar 4.0 plus a
+            private copy of DOSBox Staging for **macOS, Windows, and Linux** already
+            inside. No install, no setup, no internet required.
+
+            ### Get writing
+            1. **Download `WordStar-4-portable.zip`** below and unzip it.
+            2. Double-click the launcher for your OS:
+               - 🍎 macOS — **`WordStar.command`** *(first time: right-click → Open)*
+               - 🪟 Windows — **`WordStar.bat`** *(first time: More info → Run anyway)*
+               - 🐧 Linux — **`WordStar.desktop`** *(or run `./wordstar.sh`)*
+            3. Press **`D`** to create a document, **`Alt-Enter`** for full screen,
+               and **`Ctrl-K S`** to save (early and often — it doesn't autosave).
+
+            New to WordStar? The bundled **[manual](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/docs/MANUAL.md)**
+            and **[one-page cheat sheet](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/docs/QUICK-REFERENCE.md)**
+            have you fluent in half an hour.
+
+            Prefer zero install? There's a browser edition too — see the README.
+
+            ---
+            *${{ github.ref_name }} — a nod to WordStar Release 4, humble enough not to
+            call a lovingly-wrapped abandonware project “1.0.”*
