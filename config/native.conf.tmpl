@@ -10,7 +10,12 @@
 fullscreen=false
 
 [cpu]
-cycles=auto
+# Pin a fixed, modest CPU speed instead of "auto". With cycles=auto, DOSBox
+# Staging can ramp the emulated CPU up under sustained key-repeat (e.g. holding
+# an arrow key to scroll), which outpaces WordStar's optimized screen redraw and
+# garbles the display until the next full repaint. A fixed value keeps redraws
+# coherent. 3000 is already ~10x a 1987 PC, so it stays instant for a text editor.
+cycles=3000
 
 [autoexec]
 @echo off
