@@ -24,7 +24,7 @@
 This is not a clone, a tribute, or a rewrite. The files in [`ws4/`](ws4/) are the
 **original, unmodified MicroPro WordStar Professional Release 4 binaries** from
 1987. When you press `Ctrl‑K X`, the exact machine code that ran on an IBM PC/AT
-saves your file.
+saves your file. 
 
 WordStar is a 16‑bit MS‑DOS program, and no modern OS will run it directly
 (Apple dropped 16‑bit code, 64‑bit Windows refuses DOS apps, Linux never spoke
