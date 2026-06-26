@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="web/social-preview.png" alt="WordStar Professional — Release 4 (MicroPro)" width="680">
+<img src="web/social-preview.png" alt="WordStar Professional — Release 4 (MicroPro)" width="700">
 
 # WordStar 4.0
 
