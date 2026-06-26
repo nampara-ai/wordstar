@@ -17,7 +17,7 @@
 
 <div align="center">
 
-<img src="docs/wordstar-on-mac.jpg" alt="WordStar 4.0 running on a modern Mac — the EDIT MENU with a document open" width="760">
+<img src="docs/wordstar-on-mac.jpg" alt="WordStar 4.0 running on a modern Mac — the EDIT MENU with a document open" width="680">
 
 </div>
 
