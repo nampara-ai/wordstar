@@ -48,12 +48,36 @@ To start a new letter, press  D , type a name like  LETTER.DOC ,
 and press Enter.
 
 
+FULL SCREEN
+-----------
+
+Press  Alt-Enter  any time to fill your whole screen.  That is
+the proper way to write in WordStar.
+
+
+REMEMBER TO SAVE
+----------------
+
+WordStar does NOT save by itself in the desktop version.  Press
+Ctrl-K S  every few minutes.  It is instant, and you will never
+lose a word.  (The browser version autosaves for you.)
+
+
+WANT THE WHOLE STORY?
+---------------------
+
+A complete, modern manual ships with this program -- lessons,
+every command, printing, mail-merge, and troubleshooting.  Open
+these on your computer, outside WordStar:
+
+     docs/MANUAL.md            the full manual
+     docs/QUICK-REFERENCE.md   a one-page cheat sheet
+
+
 THAT IS IT
 ----------
 
 Press  Ctrl-K X  now to save and exit, or just start typing
-over this text.  Your files are saved automatically in the
-browser version, and to your WordStar folder in the desktop
-version.
+over this text.
 
 Have fun.  It is 1987 again.
