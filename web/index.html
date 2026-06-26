@@ -31,16 +31,34 @@
   header h1 { font-size: .95rem; margin: 0; font-weight: 600; letter-spacing: .04em; color: #e6e6e6; }
   header h1 span { color: #6aa9ff; }
   header .grow { flex: 1; }
-  header a.btn {
+  header a.btn, header button.btn {
     font: inherit; font-size: .8rem; color: #cde2ff; background: #1d2b44;
     border: 1px solid #36507e; border-radius: 6px; padding: .25rem .6rem; cursor: pointer; text-decoration: none;
   }
   header .btn:hover { background: #26415f; }
+  header .btn[disabled] { opacity: .5; cursor: default; }
   #dos { flex: 1 1 auto; position: relative; min-height: 0; background: #000; }
   /* js-dos fills its parent */
   #dos .jsdos-rso { width: 100%; height: 100%; }
   footer { flex: 0 0 auto; padding: .35rem .7rem; background: #111; border-top: 1px solid #333; font-size: .72rem; color: #888; text-align: center; }
   kbd { background: #222; border: 1px solid #444; border-bottom-width: 2px; border-radius: 4px; padding: 0 .3rem; color: #ddd; font-size: .72rem; }
+
+  /* Download-files modal */
+  #dl-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; align-items: center; justify-content: center; z-index: 50; }
+  #dl-overlay.open { display: flex; }
+  #dl-modal { background: #161616; border: 1px solid #333; border-radius: 10px; width: min(440px, 92vw); max-height: 80vh; overflow: auto; box-shadow: 0 12px 40px rgba(0,0,0,.6); }
+  #dl-modal h2 { margin: 0; padding: .85rem 1rem; font-size: .95rem; border-bottom: 1px solid #2a2a2a; color: #e6e6e6; display: flex; align-items: center; gap: .5rem; }
+  #dl-modal h2 .grow { flex: 1; }
+  #dl-modal .x { background: none; border: none; color: #888; font-size: 1.1rem; cursor: pointer; line-height: 1; }
+  #dl-list { list-style: none; margin: 0; padding: .5rem; }
+  #dl-list li { display: flex; align-items: center; gap: .6rem; padding: .4rem .5rem; border-radius: 6px; }
+  #dl-list li:hover { background: #1e1e1e; }
+  #dl-list .fname { flex: 1; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .82rem; color: #d8d8d8; }
+  #dl-list .fsize { color: #777; font-size: .72rem; }
+  #dl-list a.dl { color: #cde2ff; background: #1d2b44; border: 1px solid #36507e; border-radius: 5px; padding: .15rem .5rem; font-size: .75rem; text-decoration: none; cursor: pointer; }
+  #dl-list a.dl:hover { background: #26415f; }
+  #dl-empty { padding: 1rem; color: #999; font-size: .82rem; line-height: 1.5; }
+  #dl-foot { padding: .6rem 1rem; border-top: 1px solid #2a2a2a; font-size: .72rem; color: #888; }
 </style>
 </head>
 <body>
@@ -48,14 +66,25 @@
   <header>
     <h1>Word<span>Star</span> 4.0</h1>
     <div class="grow"></div>
+    <button class="btn" id="dl" disabled title="Save in WordStar first (Ctrl-K S), then download your .DOC files to your computer">⬇ Download files</button>
     <a class="btn" href="#" id="fs">⛶ Fullscreen</a>
     <a class="btn" href="https://github.com/nampara-ai/wordstar#readme" target="_blank" rel="noopener">Help</a>
   </header>
   <div id="dos"></div>
   <footer>
-    Real WordStar 4.0 in your browser · Save &amp; exit with <kbd>Ctrl</kbd>+<kbd>K</kbd> then <kbd>X</kbd> ·
-    Your work is kept in this browser; use the floppy-disk button (left edge) to download your files.
+    Real WordStar 4.0 in your browser · In WordStar, save with <kbd>Ctrl</kbd>+<kbd>K</kbd> then <kbd>S</kbd> ·
+    Your work is kept in this browser automatically — use <strong>⬇ Download files</strong> above to save copies to your computer.
   </footer>
+</div>
+
+<!-- Download-your-files modal -->
+<div id="dl-overlay" role="dialog" aria-modal="true" aria-labelledby="dl-title">
+  <div id="dl-modal">
+    <h2 id="dl-title">Download your files<span class="grow"></span><button class="x" id="dl-close" aria-label="Close">✕</button></h2>
+    <ul id="dl-list"></ul>
+    <div id="dl-empty" hidden></div>
+    <div id="dl-foot">Tip: in WordStar press <kbd>Ctrl</kbd>+<kbd>K</kbd> then <kbd>S</kbd> to save your document before downloading, so the copy is up to date.</div>
+  </div>
 </div>
 
 <script src="js-dos.js"></script>
@@ -75,6 +104,17 @@
     backendLocked: true,
   };
 
+  // Capture the js-dos command interface once the emulator is ready, so we can
+  // read files back out of WordStar's C: drive. (The built-in floppy button
+  // only *persists to this browser*; it does not download to your computer.)
+  let wsCi = null;
+  props.onEvent = (event, arg) => {
+    if (event === "ci-ready") {
+      wsCi = arg;
+      document.getElementById("dl").disabled = false;
+    }
+  };
+
   const dosDiv = document.getElementById("dos");
   window.Dos(dosDiv, props);
 
@@ -84,6 +124,111 @@
     const el = document.getElementById("app");
     if (document.fullscreenElement) document.exitFullscreen();
     else if (el.requestFullscreen) el.requestFullscreen();
+  });
+
+  // ---- Download your files -------------------------------------------------
+  // WordStar's program/overlay files live on the same C: drive as your
+  // documents; we list everything that looks like a user document and skip the
+  // program files.
+  const SYS_FILES = new Set([
+    "MAILMRGE.OVR","SPELSTAR.OVR","WS.EXE","WS3KEYS.PAT","WSCHANGE.EXE",
+    "WSCHANGE.OVR","WSMSGS.OVR","WSOVLY1.OVR","WSPRINT.OVR","WSSHORT.OVR",
+    "WSSPELL.OVR",
+  ]);
+  const SKIP_EXT = new Set(["OVR","EXE","PAT","COM","SYS","OVL","BAT","CONF","JSDOS","DBP","DSK","IMG","JSON"]);
+  const SKIP_NAMES = new Set(["JSDOS.JSON"]);
+
+  function isUserDoc(name) {
+    const up = name.toUpperCase();
+    if (SYS_FILES.has(up) || SKIP_NAMES.has(up)) return false;
+    if (up.includes("$")) return false;          // WordStar temp/work files: FOX.$A$, FOX.$B$, .$$$
+    const dot = up.lastIndexOf(".");
+    const ext = dot >= 0 ? up.slice(dot + 1) : "";
+    if (SKIP_EXT.has(ext)) return false;
+    return true;
+  }
+
+  function flatten(node, prefix, out) {
+    for (const child of (node.nodes || [])) {
+      const path = prefix ? prefix + "/" + child.name : child.name;
+      if (child.nodes) flatten(child, path, out);
+      else out.push({ name: child.name, path, size: child.size });
+    }
+  }
+
+  function saveBlob(name, bytes) {
+    const blob = new Blob([bytes], { type: "application/octet-stream" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+
+  async function downloadOne(file) {
+    const raw = await wsCi.fsReadFile(file.path);
+    // WordStar sets the high bit (0x80) on each word's final letter and on soft
+    // line breaks. Clear it so the downloaded file is clean, readable text that
+    // opens correctly in any modern editor. Bytes below 0x80 are untouched.
+    const clean = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) clean[i] = raw[i] & 0x7f;
+    // Trim trailing DOS sector padding: NUL (0x00) and the ^Z EOF marker (0x1A).
+    let end = clean.length;
+    while (end > 0 && (clean[end - 1] === 0x00 || clean[end - 1] === 0x1a)) end--;
+    saveBlob(file.name, clean.subarray(0, end));
+  }
+
+  const overlay = document.getElementById("dl-overlay");
+  const listEl = document.getElementById("dl-list");
+  const emptyEl = document.getElementById("dl-empty");
+
+  function closeModal() { overlay.classList.remove("open"); }
+  document.getElementById("dl-close").addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+  document.getElementById("dl").addEventListener("click", async () => {
+    if (!wsCi) return;
+    listEl.innerHTML = "";
+    emptyEl.hidden = true;
+    let files = [];
+    try {
+      const tree = await wsCi.fsTree();
+      flatten(tree, "", files);
+    } catch (err) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = "Couldn't read the WordStar drive: " + (err && err.message || err);
+      overlay.classList.add("open");
+      return;
+    }
+    files = files.filter((f) => isUserDoc(f.name))
+                 .sort((a, b) => a.name.localeCompare(b.name));
+
+    if (files.length === 0) {
+      emptyEl.hidden = false;
+      emptyEl.innerHTML = "No documents yet.<br><br>In WordStar, press <kbd>D</kbd> at the Opening Menu, name a file (e.g. <code>LETTER.DOC</code>), type something, then save with <kbd>Ctrl</kbd>+<kbd>K</kbd> then <kbd>S</kbd>. It'll show up here.";
+    } else {
+      for (const f of files) {
+        const li = document.createElement("li");
+        const kb = f.size != null ? (Math.max(1, Math.round(f.size / 1024)) + " KB") : "";
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "fname"; nameSpan.textContent = f.name;
+        const sizeSpan = document.createElement("span");
+        sizeSpan.className = "fsize"; sizeSpan.textContent = kb;
+        const btn = document.createElement("a");
+        btn.className = "dl"; btn.textContent = "Download"; btn.href = "#";
+        btn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          btn.textContent = "…";
+          try { await downloadOne(f); btn.textContent = "Saved ✓"; }
+          catch (err) { btn.textContent = "Error"; console.error(err); }
+          setTimeout(() => { btn.textContent = "Download"; }, 1500);
+        });
+        li.append(nameSpan, sizeSpan, btn);
+        listEl.appendChild(li);
+      }
+    }
+    overlay.classList.add("open");
   });
 </script>
 </body>

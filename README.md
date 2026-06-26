@@ -99,10 +99,12 @@ cd web && python3 -m http.server 8000
 ```
 
 WordStar boots straight into its Opening Menu. Your work autosaves *inside the
-browser*; use the **floppy‑disk button** on the left edge to download documents
-as real files. (It needs a small local server rather than a `file://`
-double‑click, because browsers won't load WebAssembly off the bare filesystem.)
-Every Ctrl‑key works here too — they're captured before the browser sees them.
+browser* automatically. To save copies to your computer, save in WordStar first
+(`Ctrl‑K S`), then click **⬇ Download files** in the top bar and pick the
+documents you want — they're saved as clean, readable text files. (The site
+needs a small local server rather than a `file://` double‑click, because
+browsers won't load WebAssembly off the bare filesystem.) Every Ctrl‑key works
+here too — they're captured before the browser sees them.
 
 ---
 

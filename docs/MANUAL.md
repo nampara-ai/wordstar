@@ -157,8 +157,14 @@ cd web && python3 -m http.server 8000
 
 It needs a tiny local web server (the one‑liner above) rather than a `file://`
 double‑click, because browsers won’t load WebAssembly straight off disk. Your
-work autosaves *inside the browser*; use the **floppy‑disk button** on the left
-edge of the page to download your documents as real files.
+work autosaves *inside the browser*. To save copies onto your computer, save in
+WordStar first (`Ctrl‑K S`), then click **⬇ Download files** in the top bar and
+choose the documents you want — they're handed back as clean, readable text
+files.
+
+> Note: the floppy‑disk icon in the emulator's own side‑rail only *persists your
+> work to this browser* (so it survives a reload). Use the **⬇ Download files**
+> button in the page's top bar to actually save files to your computer.
 
 Every Ctrl‑key in this manual works in the browser too — they’re captured before
 the browser sees them. This repo already publishes the browser edition at
