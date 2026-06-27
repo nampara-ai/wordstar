@@ -739,9 +739,19 @@ Really WordStar. The files in `ws4/` are the original 1987 MicroPro binaries,
 byte‑for‑byte. We only added the wrapper that boots them.
 
 **Will my files work in modern programs?**
-Yes — they’re plain text. WordStar may add a few formatting markers; any modern
-editor opens them fine. For a perfectly clean text file, save (or “print to
-file”) and the result is portable everywhere.
+Mostly — but with a catch worth knowing. WordStar’s **document mode** (the `D`
+command) sets the high bit on each word’s last letter as a word‑wrap flag, so a
+`.DOC` opened directly in TextEdit/Notepad looks garbled (`WriterÛ ArÂ SÔ…`).
+Your text is perfectly intact; it’s just flagged. Two fixes:
+- **Clean them in one step:** run **`scripts/convert-drive.sh`** (macOS/Linux) or
+  **`scripts/convert-drive.ps1`** (Windows). It clones every `.DOC` in your
+  `drive/` folder into clean, readable `.txt` files under
+  `drive/doc-to-txt conversions/` — originals untouched.
+- **Avoid it up front:** write in **nondocument mode** (press `N` instead of `D`
+  at the Opening Menu) — those files are plain ASCII with no high‑bit flags.
+
+The browser version handles this for you automatically in its **⬇ Download
+files** button.
 
 **Do I need the internet?**
 No. DOSBox is bundled in this folder. Everything runs fully offline, forever.
