@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="web/social-preview.png" alt="WordStar Professional — Release 4 (MicroPro)" width="700">
+<img src="web/social-preview.jpg" alt="WordStar Professional — Release 4 (MicroPro)" width="700">
 
 # WordStar 4.0
 
@@ -49,7 +49,7 @@ Both run the *same* WordStar binaries.
 |---|---|---|
 | 🍎 **macOS** | **`WordStar.command`** | First time: right‑click → **Open** to clear Gatekeeper (once). |
 | 🪟 **Windows** | **`WordStar.bat`** | First time: SmartScreen → **More info → Run anyway** (once). |
-| 🐧 **Linux** | **`WordStar.desktop`** *(or run `./wordstar.sh`)* | First time you may need to right‑click → *Allow Launching*. |
+| 🐧 **Linux** | Run **`./wordstar.sh`** in a terminal | `WordStar.desktop` works from file managers that allow launching local `.desktop` files (right‑click → *Allow Launching* first). |
 
 The first launch creates your personal **`drive/`** folder (that's your WordStar
 disk — the program plus everything you write) and drops you at WordStar's
@@ -110,17 +110,29 @@ here too — they're captured before the browser sees them.
 
 ## 📂 Where your writing lives
 
-Everything you write is an ordinary text file in the **`drive/`** folder next to
-the launcher (inside WordStar, that folder is drive `C:`):
+Everything you write is a real file in the **`drive/`** folder next to the
+launcher (inside WordStar, that folder is drive `C:`):
 
 ```
-drive/LETTER.DOC      ← what you wrote — open it in any modern editor
+drive/LETTER.DOC      ← what you wrote (WordStar's own format — see below)
 drive/LETTER.BAK      ← WordStar's automatic backup of your previous save
 ```
 
 Deleted something you wanted? Your last save is sitting in the matching `.BAK`
 file. File names are DOS‑style **8.3** (up to 8 characters, a dot, up to 3 —
 `CHAPTER1.DOC`).
+
+**One thing to know:** WordStar's normal "document mode" saves in its own 1980s
+format — it flags the last letter of each word and each word‑wrapped line break
+by setting a high bit, so the file looks subtly garbled in Notepad or TextEdit
+(`thE quicK browN foX`). Two easy ways to get clean modern text:
+
+- **`scripts/convert-drive.sh`** (macOS/Linux) or **`scripts/convert-drive.ps1`**
+  (Windows) — converts every `.DOC` in `drive/` to plain UTF‑8 text in
+  `drive/doc-to-txt conversions/`. Originals are never touched; re‑run any time.
+- Or write in **nondocument mode** in the first place (press **`N`** instead of
+  `D` at the Opening Menu) — that saves ordinary plain text, at the cost of
+  WordStar's word‑wrap/formatting features.
 
 ---
 
@@ -160,11 +172,11 @@ config/                  DOSBox configs (web + desktop)
 web/                     Browser version (js-dos / DOSBox-WASM) + index.html
 WordStar.command         macOS launcher        (double-click)
 WordStar.bat             Windows launcher      (double-click)
-WordStar.desktop         Linux launcher        (double-click)
 wordstar.sh              Linux launcher        (terminal)
+WordStar.desktop         Linux launcher        (file managers that allow it)
 native/lib/              Launcher internals (find/fetch DOSBox, boot WordStar)
 native/bin/              Bundled DOSBox per OS  (committed, runs offline)
-scripts/                 fetch-dosbox.*, build-web.sh, make_jsdos.py
+scripts/                 convert-drive.* (DOC→txt), fetch-dosbox.*, build-web.sh
 .github/workflows/       bundle.yml (offline zip) + pages.yml (browser site)
 ```
 

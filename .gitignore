@@ -1,6 +1,8 @@
 # Runtime state created by the launchers
 /drive/
 /native/.dosbox.generated.conf
+# macOS: the .app the launcher extracts from the bundled (tracked) dmg
+/native/bin/macos/*.app/
 
 # Build / packaging output
 /dist/
@@ -9,7 +11,6 @@ node_modules/
 *.log
 
 # js-dos browser autosave + stray screenshots
+# (the intentional social-share image is a .jpg, so it isn't caught by this)
 /web/wordstar.jsdos.changes
 /web/*.png
-# keep the social-share/OG image (intentional, not a stray screenshot)
-!/web/social-preview.png
