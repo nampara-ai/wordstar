@@ -24,13 +24,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install packaging tools
-        run: sudo apt-get update && sudo apt-get install -y xz-utils unzip zip
+        run: sudo apt-get update && sudo apt-get install -y zip
 
-      - name: Fetch DOSBox Staging for all platforms
-        run: |
-          ./scripts/fetch-dosbox.sh linux
-          ./scripts/fetch-dosbox.sh windows
-          ./scripts/fetch-dosbox.sh macos     # stashes the raw .dmg for first-run unpack
+      # The DOSBox Staging binaries for all three platforms are committed in
+      # native/bin/ (pinned via scripts/fetch-dosbox.sh), so the zip ships
+      # exactly what the repo tests — no re-download that could drift.
 
       - name: Build the browser bundle
         run: ./scripts/build-web.sh
@@ -72,7 +70,7 @@ jobs:
             2. Double-click the launcher for your OS:
                - 🍎 macOS — **`WordStar.command`** *(first time: right-click → Open)*
                - 🪟 Windows — **`WordStar.bat`** *(first time: More info → Run anyway)*
-               - 🐧 Linux — **`WordStar.desktop`** *(or run `./wordstar.sh`)*
+               - 🐧 Linux — run **`./wordstar.sh`** *(or `WordStar.desktop`, where file managers allow it)*
             3. Press **`D`** to create a document, **`Alt-Enter`** for full screen,
                and **`Ctrl-K S`** to save (early and often — it doesn't autosave).
 
