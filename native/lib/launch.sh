@@ -77,9 +77,11 @@ pick() {
 
 pick
 
-# --- 3a. macOS: extract a bundled raw .dmg on first run -----------------
-# CI ships native/bin/macos/dosbox-staging.dmg (extracting on Linux would
-# mangle the app); unpack it here on the Mac, then look again.
+# --- 3a. macOS: extract the bundled raw .dmg on first run ---------------
+# The repo ships native/bin/macos/dosbox-staging.dmg (extracting on Linux
+# would mangle the app); unpack it here on the Mac, then look again.
+# The dmg is a tracked file, so leave it in place — the extracted .app is
+# gitignored, keeping git clones clean.
 if [ -z "$DOSBOX" ] && [ "$OS" = macos ]; then
     dmg="$(/usr/bin/find "$BIN/macos" -maxdepth 1 -name '*.dmg' 2>/dev/null | head -1 || true)"
     if [ -n "$dmg" ] && command -v hdiutil >/dev/null 2>&1; then
@@ -88,7 +90,6 @@ if [ -z "$DOSBOX" ] && [ "$OS" = macos ]; then
         app="$(/usr/bin/find "$mnt" -maxdepth 2 -name '*.app' | head -1 || true)"
         [ -n "$app" ] && cp -R "$app" "$BIN/macos/"
         hdiutil detach "$mnt" >/dev/null 2>&1 || true
-        rm -f "$dmg"
         pick
     fi
 fi

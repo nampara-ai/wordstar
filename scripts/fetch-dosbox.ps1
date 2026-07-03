@@ -24,6 +24,9 @@ $inner = Get-ChildItem -Path $tmp -Directory | Select-Object -First 1
 if ($inner) { Copy-Item (Join-Path $inner.FullName "*") $Dest -Recurse -Force }
 else        { Copy-Item (Join-Path $tmp "*")          $Dest -Recurse -Force }
 
+# Drop the debugger build; the launcher never uses it and it's ~5 MB.
+Remove-Item (Join-Path $Dest "dosbox_with_debugger.exe") -Force -ErrorAction SilentlyContinue
+
 # Clear "downloaded from the internet" marks so SmartScreen stays quiet.
 Get-ChildItem $Dest -Recurse -Include *.exe, *.dll | Unblock-File -ErrorAction SilentlyContinue
 

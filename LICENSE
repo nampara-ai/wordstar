@@ -1,3 +1,21 @@
+SCOPE
+
+The MIT License below covers the original wrapper work in this repository:
+the launchers, scripts, web page glue, configuration, and documentation.
+
+It does NOT cover the third-party components redistributed alongside it:
+
+  * ws4/ and web/wordstar.jsdos — MicroPro WordStar Professional Release 4
+    binaries, property of their respective rights holders, included as
+    widely-distributed abandonware with no license claimed or granted.
+  * native/bin/ — DOSBox Staging, GPL-2.0-or-later, from its official
+    releases (https://github.com/dosbox-staging/dosbox-staging); license
+    texts are included under native/bin/*/doc/licenses/.
+  * web/js-dos.js, web/emulators/ and related files — js-dos / emulators
+    (https://js-dos.com), GPL-2.0, from the official npm packages.
+
+---
+
 MIT License
 
 Copyright (c) 2026 Jake Lundahl

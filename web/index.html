@@ -13,14 +13,14 @@
 <meta property="og:title" content="WordStar 4.0 — the real 1987 word processor, in your browser">
 <meta property="og:description" content="The real MicroPro WordStar Professional Release 4. Over 120 enhancements. Classic look &amp; commands. Nothing to install — open and start typing.">
 <meta property="og:url" content="https://nampara-ai.github.io/wordstar/">
-<meta property="og:image" content="https://nampara-ai.github.io/wordstar/social-preview.png">
-<meta property="og:image:width" content="1672">
-<meta property="og:image:height" content="941">
+<meta property="og:image" content="https://nampara-ai.github.io/wordstar/social-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
 <meta property="og:image:alt" content="WordStar Professional — Release 4 (MicroPro)">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="WordStar 4.0 — the real 1987 word processor, in your browser">
 <meta name="twitter:description" content="The real MicroPro WordStar Professional Release 4. Nothing to install — open and start typing.">
-<meta name="twitter:image" content="https://nampara-ai.github.io/wordstar/social-preview.png">
+<meta name="twitter:image" content="https://nampara-ai.github.io/wordstar/social-preview.jpg">
 
 <link rel="stylesheet" href="js-dos.css">
 <style>
@@ -156,8 +156,8 @@
     }
   }
 
-  function saveBlob(name, bytes) {
-    const blob = new Blob([bytes], { type: "application/octet-stream" });
+  function saveBlob(name, text) {
+    const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url; a.download = name;
@@ -165,17 +165,42 @@
     setTimeout(() => URL.revokeObjectURL(url), 2000);
   }
 
+  // WordStar document-mode bytes -> clean text. Same algorithm as
+  // scripts/convert-drive.sh/.ps1 (keep the three in sync): cut at ^Z, drop
+  // NUL padding, soft (word-wrap) returns become spaces, hard returns become
+  // newlines, clear the high-bit flag, drop print-control codes, tidy spaces.
+  // Soft vs hard returns must be told apart BEFORE clearing the high bit.
+  function cleanDoc(raw) {
+    let out = "";
+    for (let i = 0; i < raw.length; i++) {
+      const b = raw[i];
+      if (b === 0x1a) break;                    // ^Z = DOS end-of-file
+      if (b === 0x00) continue;                 // NUL padding
+      if (b === 0x8d) {                         // SOFT return -> space (reflow)
+        out += " ";
+        if (i + 1 < raw.length && (raw[i + 1] === 0x0a || raw[i + 1] === 0x8a)) i++;
+        continue;
+      }
+      if (b === 0x0d) {                         // HARD return -> newline
+        out += "\n";
+        if (i + 1 < raw.length && raw[i + 1] === 0x0a) i++;
+        continue;
+      }
+      if (b === 0x0a || b === 0x8a) { out += "\n"; continue; }
+      const c = b & 0x7f;                       // clear WordStar high-bit flag
+      if (c === 0x09) { out += "\t"; continue; }
+      if (c < 0x20) continue;                   // drop print-control codes (^B bold, ^S underline, ...)
+      out += String.fromCharCode(c);
+    }
+    return out
+      .replace(/(\S) {2,}/g, "$1 ")             // collapse interior soft/justification spaces
+      .replace(/[ \t]+(?=\n)/g, "")             // trim trailing spaces on each line
+      .replace(/[ \t]+$/, "");                  // ...and at the very end
+  }
+
   async function downloadOne(file) {
     const raw = await wsCi.fsReadFile(file.path);
-    // WordStar sets the high bit (0x80) on each word's final letter and on soft
-    // line breaks. Clear it so the downloaded file is clean, readable text that
-    // opens correctly in any modern editor. Bytes below 0x80 are untouched.
-    const clean = new Uint8Array(raw.length);
-    for (let i = 0; i < raw.length; i++) clean[i] = raw[i] & 0x7f;
-    // Trim trailing DOS sector padding: NUL (0x00) and the ^Z EOF marker (0x1A).
-    let end = clean.length;
-    while (end > 0 && (clean[end - 1] === 0x00 || clean[end - 1] === 0x1a)) end--;
-    saveBlob(file.name, clean.subarray(0, end));
+    saveBlob(file.name, cleanDoc(raw));
   }
 
   const overlay = document.getElementById("dl-overlay");

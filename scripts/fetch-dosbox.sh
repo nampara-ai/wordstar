@@ -50,25 +50,24 @@ case "$OS" in
     ;;
 
   macos)
+    # Always (re)stage the raw .dmg — it's the tracked, committed artifact.
+    # The macOS launcher mounts and extracts it on first run (hdiutil is
+    # reliable there; 7z on Linux mangles the .app's symlinks and signature).
     dest="$BIN/macos"
     mkdir -p "$dest"
+    dl "$BASE/dosbox-staging-macOS-v${DBS_VERSION}.dmg" "$dest/dosbox-staging.dmg"
     if command -v hdiutil >/dev/null 2>&1; then
-        # Real macOS: mount the dmg and copy the .app out -> runnable offline.
-        rm -rf "$dest"; mkdir -p "$dest"
-        dmg="$TMP/dbs.dmg"
-        dl "$BASE/dosbox-staging-macOS-v${DBS_VERSION}.dmg" "$dmg"
-        mnt="$(hdiutil attach -nobrowse -readonly "$dmg" | grep -o '/Volumes/.*' | head -1)"
+        # Real macOS: also extract the .app now (gitignored) so the next
+        # launch doesn't have to.
+        find "$dest" -maxdepth 1 -name '*.app' -exec rm -rf {} +
+        mnt="$(hdiutil attach -nobrowse -readonly "$dest/dosbox-staging.dmg" | grep -o '/Volumes/.*' | head -1)"
         app="$(find "$mnt" -maxdepth 2 -name '*.app' | head -1)"
         [ -n "$app" ] || { hdiutil detach "$mnt" >/dev/null 2>&1; die "No .app inside the dmg"; }
         cp -R "$app" "$dest/"
         hdiutil detach "$mnt" >/dev/null 2>&1 || true
         xattr -dr com.apple.quarantine "$dest" 2>/dev/null || true
-        say "DOSBox Staging staged in $dest"
+        say "DOSBox Staging staged in $dest (dmg + extracted .app)"
     else
-        # CI / non-mac host: stash the raw .dmg. The macOS launcher mounts and
-        # extracts it on first run (where hdiutil is reliable; 7z on Linux
-        # mangles the .app's symlinks and code signature).
-        dl "$BASE/dosbox-staging-macOS-v${DBS_VERSION}.dmg" "$dest/dosbox-staging.dmg"
         say "DOSBox Staging .dmg stashed in $dest (extracted on first run, on a Mac)"
     fi
     ;;
@@ -84,6 +83,8 @@ case "$OS" in
     unzip -q "$zip" -d "$TMP/winx"
     inner="$(find "$TMP/winx" -maxdepth 1 -mindepth 1 -type d | head -1)"
     if [ -n "$inner" ]; then cp -R "$inner"/. "$dest"/; else cp -R "$TMP/winx"/. "$dest"/; fi
+    # Drop the debugger build; the launcher never uses it and it's ~5 MB.
+    rm -f "$dest/dosbox_with_debugger.exe"
     say "DOSBox Staging staged in $dest"
     ;;
 
