@@ -200,6 +200,6 @@ Rebuilt the browser bundle after changing `ws4/`? Run `scripts/build-web.sh`.
 
 ---
 
-*“It is 1987 again. Have fun.”*
+*“It's 1987 again. Have fun.”*
 
 </div>
