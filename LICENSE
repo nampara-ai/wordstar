@@ -1,4 +1,6 @@
-SCOPE
+MIT License
+
+Copyright (c) 2026 Jake Lundahl
 
 The MIT License below covers the original wrapper work in this repository:
 the launchers, scripts, web page glue, configuration, and documentation.
@@ -15,10 +17,6 @@ It does NOT cover the third-party components redistributed alongside it:
     (https://js-dos.com), GPL-2.0, from the official npm packages.
 
 ---
-
-MIT License
-
-Copyright (c) 2026 Jake Lundahl
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
